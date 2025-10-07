@@ -1,0 +1,20 @@
+name: deploy threedwear back
+on: 
+  push:
+    branch:
+      - fork
+jobs:
+  create-folder:
+    name: create folder
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute commande
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: |
+            mkdir /home/servsciences/test
+            ls -al /home/servsciences
