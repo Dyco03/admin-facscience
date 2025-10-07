@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           source: "build/*"
-          target: "/home/servsciences/facscience"
+          target: "/home/servsciences/iface-admin-facscience"
 
       # Donner les bons droits
       - name: Fix permissions
@@ -61,6 +61,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            sudo chown -R www-data:www-data /home/servsciences/facscience
-            sudo chmod -R 755 /home/servsciences/facscience
-            ls -al /home/servsciences/facscience
+            sudo chown -R www-data:www-data /home/servsciences/iface-admin-facscience
+            sudo chmod -R 755 /home/servsciences/iface-admin-facscience
+            ls -al /home/servsciences/iface-admin-facscience
