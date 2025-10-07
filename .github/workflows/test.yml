@@ -19,7 +19,6 @@ jobs:
             mkdir -p /home/servsciences/iface-admin-facscience
             ls -al /home/servsciences
 
-jobs:
   build-and-deploy:
     name: Build and Deploy React App
     runs-on: ubuntu-latest
