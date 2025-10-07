@@ -16,5 +16,52 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            mkdir /home/servsciences/test
+            mkdir -p /home/servsciences/iface-admin-facscience
             ls -al /home/servsciences
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy React App
+    runs-on: ubuntu-latest
+
+    steps:
+      # Cloner le repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Installer les dependances et builder le projet React
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      # 4Deploiement via SSH
+      - name: Deploy via SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          source: "build/*"
+          target: "/home/servsciences/facscience"
+
+      # Donner les bons droits
+      - name: Fix permissions
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo chown -R www-data:www-data /home/servsciences/facscience
+            sudo chmod -R 755 /home/servsciences/facscience
+            ls -al /home/servsciences/facscience
