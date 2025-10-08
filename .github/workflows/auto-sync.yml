@@ -1,10 +1,10 @@
 name: Auto Sync Fork
 
-# Déclenchement : tous les jours et manuellement
+# Déclenchement : toutes les heures et manuellement
 on:
   schedule:
-    - cron: '*/1 * * * *'  # toutes les heures (tu peux changer)
-  workflow_dispatch:       # permet de lancer manuellement
+    - cron: '0 * * * *'  # toutes les heures à la minute 0
+  workflow_dispatch:    # permet de lancer manuellement
 
 jobs:
   sync:
@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: fork
+          ref: fork  # Utiliser la branche fork
 
       # Configurer Git
       - name: Configure Git
@@ -34,10 +34,11 @@ jobs:
 
       # Merge les commits
       - name: Merge upstream
-        run: git checkout main && git merge upstream/main --allow-unrelated-histories
+        run: git checkout fork && git merge upstream/main --allow-unrelated-histories
+        continue-on-error: true  # Continuer même en cas de conflit
 
       # Pousser les changements dans ton fork
       - name: Push changes
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git push origin main
+        run: git push origin fork
