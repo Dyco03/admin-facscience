@@ -41,7 +41,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # 4Deploiement via SSH
+      # Deploiement via SSH
       - name: Deploy via SSH
         uses: appleboy/scp-action@v0.1.7
         with:
