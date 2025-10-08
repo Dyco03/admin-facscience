@@ -1,0 +1,42 @@
+name: Auto Sync Fork
+
+# Déclenchement : tous les jours et manuellement
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # toutes les heures (tu peux changer)
+  workflow_dispatch:       # permet de lancer manuellement
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Récupérer ton fork
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Configurer Git
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      # Ajouter le repo original comme upstream
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/Edmonico09/admin-facscience.git
+
+      # Récupérer les commits du repo original
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      # Merge les commits
+      - name: Merge upstream
+        run: git checkout main && git merge upstream/main --allow-unrelated-histories
+
+      # Pousser les changements dans ton fork
+      - name: Push changes
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git push origin main
