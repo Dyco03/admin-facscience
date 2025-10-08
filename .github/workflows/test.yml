@@ -50,6 +50,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           source: "dist/"
+          strip_components: 1
           target: "/home/servsciences/iface-admin-facscience"
 
       # Donner les bons droits
