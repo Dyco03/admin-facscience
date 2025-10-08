@@ -3,7 +3,7 @@ name: Auto Sync Fork
 # Déclenchement : toutes les heures et manuellement
 on:
   schedule:
-    - cron: '0 * * * *'  # toutes les heures à la minute 0
+    - cron: '* * * * *'  # toutes les heures à la minute 0
   workflow_dispatch:    # permet de lancer manuellement
 
 jobs:
